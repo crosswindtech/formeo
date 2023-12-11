@@ -2,11 +2,7 @@
 
 A pure JavaScript module for drag and drop form creation.
 
-![npm](https://img.shields.io/npm/v/formeo.svg) ![GitHub](https://img.shields.io/github/license/Draggable/formeo.svg) [![build](https://github.com/Draggable/formeo/workflows/build/badge.svg)](https://github.com/Draggable/formeo/actions?query=workflow%3Abuild)
-
-## [Demo](https://draggable.github.io/formeo/)
-
-[![formeo-demo](https://user-images.githubusercontent.com/1457540/54798148-72c3c400-4c14-11e9-9d3f-bafe1ce0c8c1.gif)](https://draggable.github.io/formeo/)
+![npm](https://img.shields.io/npm/v/formeo.svg) ![GitHub](https://img.shields.io/github/license/crosswindtech/formeo.svg) [![build](https://github.com/crosswindtech/formeo/workflows/build/badge.svg)](https://github.com/crosswindtech/formeo/actions?query=workflow%3Abuild)
 
 ## Features
 
@@ -21,13 +17,13 @@ A pure JavaScript module for drag and drop form creation.
 
 ### NPM
 
-```
+```sh
 npm install --save formeo
 ```
 
 ### Manual
 
-```
+```html
 <script src="https://draggable.github.io/formeo/assets/js/formeo.min.js"></script>
 ```
 
@@ -50,6 +46,6 @@ const renderer = new FormeoRenderer(options)
 renderer.render(formData)
 ```
 
-## [Docs](https://github.com/Draggable/formeo/blob/master/docs/README.md)
+## [Docs](https://github.com/crosswindtech/formeo/blob/master/docs/README.md)
 
-## [Changelog](https://github.com/Draggable/formeo/blob/master/CHANGELOG.md)
+## [Changelog](https://github.com/crosswindtech/formeo/blob/master/CHANGELOG.md)
