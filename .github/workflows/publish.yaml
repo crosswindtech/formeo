@@ -10,32 +10,28 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [12]
+        node-version:
+          - 12.x
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up Nodejs ${{ matrix.node }}
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v3
+
+      - name: Set up Nodejs ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+
       - name: Install dependencies
-        env:
-          CI: true
-        run: npm install
+        run: npm ci
+
       - name: Test
-        run: npm test
+        run: npm run test:ci
+
       - name: Build
         run: npm run build
-      - name: Publish
+
+      - name: Publish release to GitHub
         if: success()
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npx semantic-release
-      - name: Build the new version for the demo
-        if: success()
-        run: npm run build
-      - name: Deploy - https://draggable.github.io/formeo/
-        if: success()
-        env:
-          GH_PAT: ${{ secrets.GH_TOKEN }}
-          BUILD_DIR: demo/
-        uses: maxheld83/ghpages@v0.2.1
+        run: |
+          npx -p node@v18-lts -c "npx semantic-release --extends npm"
