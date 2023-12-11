@@ -1,6 +1,6 @@
 {
   "name": "@crosswind/formeo",
-  "version": "1.6.3",
+  "version": "1.6.2",
   "main": "dist/formeo.min.js",
   "files": [
     "dist/*"
