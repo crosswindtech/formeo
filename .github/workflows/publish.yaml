@@ -6,20 +6,36 @@ on:
       - master
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write # to be able to publish a Github release
+      issues: write # to be able to comment on released issues
+      pull-requests: write # to be able to comment on released pull requests
+      id-token: write # to enable use of OIDC tokens for npm provenance
+
     strategy:
       matrix:
         node-version:
           - 12.x
-    steps:
-      - uses: actions/checkout@v3
+    env:
+      CI: true
 
-      - name: Set up Nodejs ${{ matrix.node-version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up Nodejs v${{ matrix.node-version }}
         uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm clean-install
 
       - name: Test
         run: npm run test:ci
@@ -27,11 +43,11 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Publish release to GitHub
+      - name: Publish release
         if: success()
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          npx -p node@v18-lts -c "npx semantic-release --extends npm"
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npx -p node@v18-lts -c "npx semantic-release"
