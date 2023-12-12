@@ -1,26 +1,27 @@
 {
-  "name": "formeo",
+  "name": "@crosswind/formeo",
   "version": "1.6.2",
   "main": "dist/formeo.min.js",
   "files": [
-    "dist/*",
-    "demo/**/*"
+    "dist/*"
   ],
-  "homepage": "https://formeo.io",
+  "homepage": "https://github.com/crosswindtech/formeo",
   "repository": {
-    "url": "https://github.com/Draggable/formeo",
+    "url": "git+https://github.com/crosswindtech/formeo.git",
     "type": "git"
   },
-  "author": "Draggable https://draggable.io",
+  "authors": [
+    "Kevin Chappell <kevin.b.chappell@gmail.com>",
+    "Joshua Burke <jburke@crosswind.com>",
+    "Crosswind Technologies, Inc. <engineering@crosswind.com>"
+  ],
   "contributors": [
-    {
-      "name": "Kevin Chappell",
-      "email": "kevin.b.chappell@gmail.com",
-      "url": "https://kevin-chappell.com"
-    }
+    "Kevin Chappell <kevin.b.chappell@gmail.com> (https://kevin-chappell.com)",
+    "Joshua Burke <jburke@crosswind.com>",
+    "Crosswind Technologies, Inc. <engineering@crosswind.com>"
   ],
   "bugs": {
-    "url": "https://github.com/draggable/formeo/issues"
+    "url": "https://github.com/crosswindtech/formeo/issues"
   },
   "description": "A zero dependency JavaScript module for drag and drop form creation.",
   "keywords": [
@@ -56,12 +57,14 @@
       [
         "@babel/preset-env",
         {
+          "useBuiltIns": "entry",
+          "corejs": "3.22",
           "targets": {
             "browsers": [
-              ">1%"
+              "> 1%, not dead"
             ]
           },
-          "loose": true
+          "loose": false
         }
       ]
     ],
@@ -79,12 +82,11 @@
     "build:icons": "babel-node ./tools/generate-sprite",
     "lint": "eslint ./src --ext .js || true",
     "test": "jest src/",
-    "test:ci": "yarn test --coverage",
+    "test:ci": "jest src/ \"--coverage\"",
     "start": "npm-run-all build:icons start:demo",
     "start:demo": "cross-env NODE_ENV=development webpack-dev-server --mode development --open --config tools/webpack.config --copy",
     "semantic-release": "semantic-release --ci --debug",
-    "travis-deploy-once": "travis-deploy-once --pro",
-    "prepush": "yarn test",
+    "prepush": "npm run test",
     "defaults": "webpack-defaults"
   },
   "devDependencies": {
@@ -99,6 +101,7 @@
     "@commitlint/config-angular": "^7.5.0",
     "@semantic-release/changelog": "3.0.0",
     "@semantic-release/git": "7.0.1",
+    "@semantic-release/github": "^5.5.8",
     "@semantic-release/npm": "5.0.2",
     "autoprefixer": "8.4.1",
     "babel-eslint": "^10.0.1",
@@ -140,18 +143,20 @@
     "prettier": "1.14.2",
     "raw-loader": "^2.0.0",
     "sass-loader": "7.0.1",
-    "semantic-release": "^15.13.4",
+    "semantic-release": "^15.14.0",
     "style-loader": "0.21.0",
     "svg-sprite": "^1.5.0",
+    "terser-webpack-plugin": "^4.2.3",
     "travis-deploy-once": "^5.0.11",
-    "uglifyjs-webpack-plugin": "2.0.1",
     "uuid": "3.3.2",
     "webpack": "^4.32.2",
     "webpack-bundle-analyzer": "^3.3.2",
     "webpack-cli": "^3.3.2",
     "webpack-dev-server": "^3.4.1"
   },
-  "engines": {},
+  "engines": {
+    "node": ">=12.0.0 <13.0.0"
+  },
   "dependencies": {
     "sortablejs": "1.12.0"
   },
@@ -192,13 +197,57 @@
     "verifyConditions": [
       "@semantic-release/changelog",
       "@semantic-release/npm",
-      "@semantic-release/git"
+      "@semantic-release/git",
+      "@semantic-release/github"
     ],
     "prepare": [
       "@semantic-release/changelog",
       "@semantic-release/npm",
-      "@semantic-release/git"
+      "@semantic-release/git",
+      "@semantic-release/github"
+    ],
+    "publish": [
+      "@semantic-release/npm",
+      "@semantic-release/github"
+    ],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      [
+        "@semantic-release/npm",
+        {
+          "tarballDir": "dist",
+          "pkgRoot": "dist"
+        }
+      ],
+      [
+        "@semantic-release/github",
+        {
+          "assets": [
+            {
+              "path": "dist/formeo.min.js",
+              "label": "formeo.min.js"
+            },
+            {
+              "path": "dist/formeo.min.gz",
+              "label": "formeo.min.gz"
+            },
+            {
+              "path": "dist/formeo.min.css",
+              "label": "formeo.min.css"
+            },
+            {
+              "path": "dist/formeo.tgz",
+              "label": "formeo.tgz"
+            }
+          ]
+        }
+      ]
     ]
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "husky": {
     "hooks": {
@@ -230,5 +279,8 @@
         ]
       ]
     }
+  },
+  "directories": {
+    "doc": "docs"
   }
 }
