@@ -80,11 +80,11 @@
     "build:icons": "babel-node ./tools/generate-sprite",
     "lint": "eslint ./src --ext .js || true",
     "test": "jest src/",
-    "test:ci": "yarn test --coverage",
+    "test:ci": "jest src/ \"--coverage\"",
     "start": "npm-run-all build:icons start:demo",
     "start:demo": "cross-env NODE_ENV=development webpack-dev-server --mode development --open --config tools/webpack.config --copy",
     "semantic-release": "semantic-release --ci --debug",
-    "prepush": "yarn test",
+    "prepush": "npm run test",
     "defaults": "webpack-defaults"
   },
   "devDependencies": {
