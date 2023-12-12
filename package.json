@@ -61,7 +61,7 @@
           "corejs": "3.22",
           "targets": {
             "browsers": [
-              ">1%"
+              "> 1%, not dead"
             ]
           },
           "loose": false
