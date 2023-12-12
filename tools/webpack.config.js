@@ -9,7 +9,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin')
 const { default: mi18n } = require('mi18n')
 const { languageFiles, enUS } = require('formeo-i18n')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const { IS_PRODUCTION, ANALYZE, projectRoot, outputDir, devtool, bannerTemplate, version } = require('./build-vars')
@@ -153,11 +153,22 @@ const webpackConfig = {
   plugins,
   devtool,
   optimization: {
+    minimize: !!IS_PRODUCTION,
     minimizer: [
-      new UglifyJsPlugin({
-        cache: true,
+      new TerserPlugin({
+        test: /\.js(\?.*)?$/i,
+        exclude: /\/node_modules/,
         parallel: true,
         sourceMap: !IS_PRODUCTION,
+        terserOptions: {
+          ecma: 5,
+          compress: {
+            drop_console: true,
+          },
+          output: {
+            comments: false,
+          },
+        },
       }),
       new OptimizeCSSAssetsPlugin(),
     ],
