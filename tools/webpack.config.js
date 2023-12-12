@@ -1,5 +1,5 @@
 const { resolve } = require('path')
-const { BannerPlugin, DefinePlugin } = require('webpack')
+const { BannerPlugin, DefinePlugin, ProgressPlugin } = require('webpack')
 const autoprefixer = require('autoprefixer')
 const CompressionPlugin = require('compression-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
@@ -31,6 +31,7 @@ const copyPatterns = [
 ]
 
 const plugins = [
+  new ProgressPlugin(),
   new CleanWebpackPlugin(['dist/*', 'demo/*'], { root: projectRoot }),
   new DefinePlugin({
     EN_US: JSON.stringify(enUS),
@@ -74,7 +75,6 @@ const plugins = [
 
 const entry = {
   'dist/formeo': resolve(__dirname, '../src/js/index.js'),
-  'demo/assets/js/demo': resolve(__dirname, '../src/demo/js/demo.js'),
 }
 
 if (IS_PRODUCTION) {
@@ -99,6 +99,12 @@ const webpackConfig = {
     publicPath: '/dist',
     filename: `[name].min.js`,
     libraryTarget: 'umd',
+    globalObject: 'this',
+  },
+  performance: {
+    hints: 'warning',
+    maxEntrypointSize: 256000,
+    maxAssetSize: 256000,
   },
   module: {
     rules: [
