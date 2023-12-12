@@ -211,8 +211,36 @@
     "plugins": [
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
-      "@semantic-release/npm",
-      "@semantic-release/github"
+      [
+        "@semantic-release/npm",
+        {
+          "tarballDir": "dist",
+          "pkgRoot": "dist"
+        }
+      ],
+      [
+        "@semantic-release/github",
+        {
+          "assets": [
+            {
+              "path": "dist/formeo.min.js",
+              "label": "formeo.min.js"
+            },
+            {
+              "path": "dist/formeo.min.gz",
+              "label": "formeo.min.gz"
+            },
+            {
+              "path": "dist/formeo.min.css",
+              "label": "formeo.min.css"
+            },
+            {
+              "path": "dist/formeo.tgz",
+              "label": "formeo.tgz"
+            }
+          ]
+        }
+      ]
     ]
   },
   "husky": {
